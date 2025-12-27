@@ -8,6 +8,11 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 
+// Log environment variables at startup
+console.log("[Startup] NODE_ENV:", process.env.NODE_ENV);
+console.log("[Startup] DATABASE_URL exists:", !!process.env.DATABASE_URL);
+console.log("[Startup] PORT:", process.env.PORT);
+
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
     const server = net.createServer();
