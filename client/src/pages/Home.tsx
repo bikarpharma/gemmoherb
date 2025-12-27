@@ -183,8 +183,8 @@ export default function Home() {
                           <TableHead className="w-[70px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
                           <TableHead className="w-[100px]">Volume</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix HT</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix TTC</TableHead>
+                          <TableHead className="w-[100px] text-right">Prix</TableHead>
+                          <TableHead className="w-[100px] text-center">Statut</TableHead>
                           <TableHead className="w-[120px]">Quantité</TableHead>
                           <TableHead className="w-[100px]"></TableHead>
                         </TableRow>
@@ -193,8 +193,9 @@ export default function Home() {
                         {macerats?.map((product) => {
                           const quantity = getQuantity(product.id);
                           const priceTTC = (parseFloat(product.priceHT) * 1.19).toFixed(2);
+                          const isOutOfStock = !product.inStock;
                           return (
-                            <TableRow key={product.id}>
+                            <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
                               <TableCell className="w-[40px]">
                                 <img
                                   src={getIconPath(product)}
@@ -212,11 +213,15 @@ export default function Home() {
                               <TableCell className="text-sm text-muted-foreground">
                                 {product.unitVolume}
                               </TableCell>
-                              <TableCell className="text-right text-sm">
-                                {product.priceHT} €
-                              </TableCell>
                               <TableCell className="text-right font-medium">
-                                {priceTTC} €
+                                {priceTTC} DT
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {isOutOfStock ? (
+                                  <Badge variant="destructive">Non disponible</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-green-600 border-green-600">En stock</Badge>
+                                )}
                               </TableCell>
                               <TableCell>
                                 <Input
@@ -225,6 +230,7 @@ export default function Home() {
                                   value={quantity}
                                   onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
                                   className="w-16 h-8 text-center"
+                                  disabled={isOutOfStock}
                                 />
                               </TableCell>
                               <TableCell>
@@ -232,6 +238,7 @@ export default function Home() {
                                   onClick={() => addToCart(product.id, product.name, product.priceHT, product.reference)}
                                   size="sm"
                                   variant="default"
+                                  disabled={isOutOfStock}
                                 >
                                   <Plus className="h-4 w-4" />
                                 </Button>
@@ -257,8 +264,8 @@ export default function Home() {
                           <TableHead className="w-[70px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
                           <TableHead className="w-[100px]">Volume</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix HT</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix TTC</TableHead>
+                          <TableHead className="w-[100px] text-right">Prix</TableHead>
+                          <TableHead className="w-[100px] text-center">Statut</TableHead>
                           <TableHead className="w-[120px]">Quantité</TableHead>
                           <TableHead className="w-[100px]"></TableHead>
                         </TableRow>
@@ -267,8 +274,9 @@ export default function Home() {
                         {huilesEssentielles?.map((product) => {
                           const quantity = getQuantity(product.id);
                           const priceTTC = (parseFloat(product.priceHT) * 1.19).toFixed(2);
+                          const isOutOfStock = !product.inStock;
                           return (
-                            <TableRow key={product.id}>
+                            <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
                               <TableCell className="w-[40px]">
                                 <img
                                   src={getIconPath(product)}
@@ -286,11 +294,15 @@ export default function Home() {
                               <TableCell className="text-sm text-muted-foreground">
                                 {product.unitVolume}
                               </TableCell>
-                              <TableCell className="text-right text-sm">
-                                {product.priceHT} €
-                              </TableCell>
                               <TableCell className="text-right font-medium">
-                                {priceTTC} €
+                                {priceTTC} DT
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {isOutOfStock ? (
+                                  <Badge variant="destructive">Non disponible</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-green-600 border-green-600">En stock</Badge>
+                                )}
                               </TableCell>
                               <TableCell>
                                 <Input
@@ -299,6 +311,7 @@ export default function Home() {
                                   value={quantity}
                                   onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
                                   className="w-16 h-8 text-center"
+                                  disabled={isOutOfStock}
                                 />
                               </TableCell>
                               <TableCell>
@@ -306,6 +319,7 @@ export default function Home() {
                                   onClick={() => addToCart(product.id, product.name, product.priceHT, product.reference)}
                                   size="sm"
                                   variant="default"
+                                  disabled={isOutOfStock}
                                 >
                                   <Plus className="h-4 w-4" />
                                 </Button>
@@ -338,57 +352,53 @@ export default function Home() {
                 ) : (
                   <>
                     <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                      {cart.map((item) => (
-                        <div key={item.productId} className="flex items-start gap-2 p-2 bg-muted/50 rounded-md">
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {item.priceHT} € × {item.quantity} = {(parseFloat(item.priceHT) * item.quantity).toFixed(2)} €
-                            </p>
+                      {cart.map((item) => {
+                        const itemPriceTTC = parseFloat(item.priceHT) * 1.19;
+                        const itemTotalTTC = itemPriceTTC * item.quantity;
+                        return (
+                          <div key={item.productId} className="flex items-start gap-2 p-2 bg-muted/50 rounded-md">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">{item.name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {itemPriceTTC.toFixed(2)} DT × {item.quantity} = {itemTotalTTC.toFixed(2)} DT
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 w-6 p-0"
+                                onClick={() => updateCartQuantity(item.productId, item.quantity - 1)}
+                              >
+                                <Minus className="h-3 w-3" />
+                              </Button>
+                              <span className="text-xs w-6 text-center">{item.quantity}</span>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 w-6 p-0"
+                                onClick={() => updateCartQuantity(item.productId, item.quantity + 1)}
+                              >
+                                <Plus className="h-3 w-3" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 w-6 p-0 text-destructive"
+                                onClick={() => removeFromCart(item.productId)}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-6 w-6 p-0"
-                              onClick={() => updateCartQuantity(item.productId, item.quantity - 1)}
-                            >
-                              <Minus className="h-3 w-3" />
-                            </Button>
-                            <span className="text-xs w-6 text-center">{item.quantity}</span>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-6 w-6 p-0"
-                              onClick={() => updateCartQuantity(item.productId, item.quantity + 1)}
-                            >
-                              <Plus className="h-3 w-3" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-6 w-6 p-0 text-destructive"
-                              onClick={() => removeFromCart(item.productId)}
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
 
                     <div className="space-y-2 pt-4 border-t">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Sous-total HT:</span>
-                        <span className="font-medium">{totals.subtotalHT.toFixed(2)} €</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">TVA (19%):</span>
-                        <span className="font-medium">{totals.tvaAmount.toFixed(2)} €</span>
-                      </div>
-                      <div className="flex justify-between text-base font-bold border-t pt-2">
-                        <span>Total TTC:</span>
-                        <span className="text-primary">{totals.totalTTC.toFixed(2)} €</span>
+                      <div className="flex justify-between text-base font-bold">
+                        <span>Total:</span>
+                        <span className="text-primary">{totals.totalTTC.toFixed(2)} DT</span>
                       </div>
                     </div>
 

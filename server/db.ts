@@ -147,6 +147,30 @@ export async function deleteProduct(id: number) {
 
 // ===== COMMANDES =====
 
+export async function getNextOrderNumber(): Promise<string> {
+  const db = await getDb();
+  if (!db) return "CMD-001";
+
+  // Récupérer la dernière commande pour extraire le numéro
+  const lastOrder = await db.select().from(orders).orderBy(desc(orders.id)).limit(1);
+
+  if (lastOrder.length === 0) {
+    return "CMD-001";
+  }
+
+  // Extraire le numéro de la dernière commande
+  const lastNumber = lastOrder[0].orderNumber;
+  const match = lastNumber.match(/CMD-(\d+)/);
+
+  if (match) {
+    const nextNum = parseInt(match[1], 10) + 1;
+    return `CMD-${nextNum.toString().padStart(3, '0')}`;
+  }
+
+  // Si format différent, utiliser l'ID
+  return `CMD-${(lastOrder[0].id + 1).toString().padStart(3, '0')}`;
+}
+
 export async function createOrder(order: InsertOrder) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -251,4 +275,16 @@ export async function getUserById(id: number) {
   if (!db) return undefined;
   const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateUser(id: number, data: Partial<InsertUser>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(users).set({ ...data, updatedAt: new Date() }).where(eq(users.id, id));
+}
+
+export async function deleteUser(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(users).where(eq(users.id, id));
 }

@@ -15,7 +15,10 @@
       "Bash(cat:*)",
       "Bash(node scripts/create-pharmacy.cjs:*)",
       "Bash(node seed-products.mjs:*)",
-      "Bash(node scripts/import-products.cjs:*)"
+      "Bash(node scripts/import-products.cjs:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ]
   }
 }

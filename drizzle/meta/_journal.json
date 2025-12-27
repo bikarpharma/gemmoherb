@@ -8,6 +8,20 @@
       "when": 1766682356995,
       "tag": "0000_mature_weapon_omega",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766865624224,
+      "tag": "0001_nebulous_stellaris",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766867003264,
+      "tag": "0002_aromatic_mister_fear",
+      "breakpoints": true
     }
   ]
 }

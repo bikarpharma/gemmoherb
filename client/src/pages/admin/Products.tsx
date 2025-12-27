@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Package, PackageX } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 
@@ -53,6 +53,13 @@ export default function AdminProducts() {
   const deleteMutation = trpc.products.delete.useMutation({
     onSuccess: () => {
       toast.success("Produit supprimé avec succès");
+      refetch();
+    },
+    onError: (error) => toast.error("Erreur: " + error.message),
+  });
+  const toggleStockMutation = trpc.products.toggleStock.useMutation({
+    onSuccess: (data) => {
+      toast.success(data.inStock ? "Produit remis en stock" : "Produit marqué en rupture");
       refetch();
     },
     onError: (error) => toast.error("Erreur: " + error.message),
@@ -163,8 +170,8 @@ export default function AdminProducts() {
                   <TableHead>Nom</TableHead>
                   <TableHead>Catégorie</TableHead>
                   <TableHead>Volume</TableHead>
-                  <TableHead className="text-right">Prix HT</TableHead>
-                  <TableHead className="text-right">Prix TTC</TableHead>
+                  <TableHead className="text-right">Prix</TableHead>
+                  <TableHead className="text-center">Disponibilité</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -181,8 +188,28 @@ export default function AdminProducts() {
                         </Badge>
                       </TableCell>
                       <TableCell>{product.unitVolume}</TableCell>
-                      <TableCell className="text-right">{product.priceHT} €</TableCell>
-                      <TableCell className="text-right font-medium">{priceTTC} €</TableCell>
+                      <TableCell className="text-right font-medium">{priceTTC} DT</TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          variant={product.inStock ? "outline" : "destructive"}
+                          size="sm"
+                          onClick={() => toggleStockMutation.mutate({ id: product.id })}
+                          disabled={toggleStockMutation.isPending}
+                          className="gap-1"
+                        >
+                          {product.inStock ? (
+                            <>
+                              <Package className="h-4 w-4" />
+                              En stock
+                            </>
+                          ) : (
+                            <>
+                              <PackageX className="h-4 w-4" />
+                              Rupture
+                            </>
+                          )}
+                        </Button>
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button
@@ -270,7 +297,7 @@ export default function AdminProducts() {
               />
             </div>
             <div>
-              <Label htmlFor="priceHT">Prix HT (€) *</Label>
+              <Label htmlFor="priceHT">Prix HT (DT) *</Label>
               <Input
                 id="priceHT"
                 type="number"
@@ -281,7 +308,7 @@ export default function AdminProducts() {
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              TVA: 19% • Prix TTC: {formData.priceHT ? (parseFloat(formData.priceHT) * 1.19).toFixed(2) : "0.00"} €
+              TVA: 19% • Prix TTC: {formData.priceHT ? (parseFloat(formData.priceHT) * 1.19).toFixed(2) : "0.00"} DT
             </div>
           </div>
           <DialogFooter>

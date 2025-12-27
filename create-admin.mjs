@@ -1,5 +1,3 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { users } from "./drizzle/schema.js";
 import dotenv from "dotenv";
 import pkg from 'pg';
 const { Pool } = pkg;
@@ -23,8 +21,6 @@ const pool = new Pool({
   }
 });
 
-const db = drizzle(pool);
-
 async function createAdmin() {
   try {
     console.log("🔐 Création du compte administrateur...");
@@ -32,21 +28,18 @@ async function createAdmin() {
     // Hash du mot de passe
     const hashedPassword = await bcrypt.hash("admin123", 10);
 
-    // Créer l'utilisateur admin
-    await db.insert(users).values({
-      username: "admin",
-      password: hashedPassword,
-      name: "Administrateur GemmoHerb",
-      email: "gemoherb@gmail.com",
-      role: "admin",
-      loginMethod: "local",
-    });
+    // Créer l'utilisateur admin avec requête SQL directe
+    await pool.query(`
+      INSERT INTO users (username, password, name, email, role, status, "loginMethod", "createdAt", "updatedAt", "lastSignedIn")
+      VALUES ($1, $2, $3, $4, $5, $6, $7, NOW(), NOW(), NOW())
+      ON CONFLICT (username) DO NOTHING
+    `, ['admin', hashedPassword, 'Administrateur GemmoHerb', 'gemoherb@gmail.com', 'admin', 'approved', 'local']);
 
     console.log("✅ Compte administrateur créé avec succès !");
     console.log("📧 Username: admin");
     console.log("🔑 Password: admin123");
     console.log("");
-    console.log("Vous pouvez maintenant vous connecter à http://localhost:3000");
+    console.log("Vous pouvez maintenant vous connecter");
 
     await pool.end();
     process.exit(0);

@@ -1,0 +1,1 @@
+ALTER TABLE "products" ADD COLUMN "inStock" boolean DEFAULT true NOT NULL;

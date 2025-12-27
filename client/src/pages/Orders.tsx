@@ -99,24 +99,16 @@ export default function Orders() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Sous-total HT</p>
-                      <p className="font-medium">{order.subtotalHT} €</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">TVA (19%)</p>
-                      <p className="font-medium">{order.tvaAmount} €</p>
-                    </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                     {parseFloat(order.discountAmount) > 0 && (
                       <div>
                         <p className="text-sm text-muted-foreground">Remise</p>
-                        <p className="font-medium text-green-600">-{order.discountAmount} €</p>
+                        <p className="font-medium text-green-600">-{order.discountAmount} DT</p>
                       </div>
                     )}
                     <div>
-                      <p className="text-sm text-muted-foreground">Total TTC</p>
-                      <p className="text-lg font-bold text-primary">{order.totalTTC} €</p>
+                      <p className="text-sm text-muted-foreground">Total</p>
+                      <p className="text-lg font-bold text-primary">{order.totalTTC} DT</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -176,8 +168,8 @@ export default function Orders() {
                     <TableRow>
                       <TableHead>Produit</TableHead>
                       <TableHead className="text-right">Qté</TableHead>
-                      <TableHead className="text-right">Prix HT</TableHead>
-                      <TableHead className="text-right">Total TTC</TableHead>
+                      <TableHead className="text-right">Prix</TableHead>
+                      <TableHead className="text-right">Total</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -191,8 +183,8 @@ export default function Orders() {
                             </div>
                           </TableCell>
                           <TableCell className="text-right">{item.quantity}</TableCell>
-                          <TableCell className="text-right">{item.priceHT} €</TableCell>
-                          <TableCell className="text-right font-medium">{item.totalTTC} €</TableCell>
+                          <TableCell className="text-right">{item.totalTTC} DT</TableCell>
+                          <TableCell className="text-right font-medium">{item.totalTTC} DT</TableCell>
                         </TableRow>
                       ))
                     ) : (
@@ -207,23 +199,15 @@ export default function Orders() {
               </div>
 
               <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Sous-total HT:</span>
-                  <span className="font-medium">{orderDetails.order.subtotalHT} €</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">TVA (19%):</span>
-                  <span className="font-medium">{orderDetails.order.tvaAmount} €</span>
-                </div>
                 {parseFloat(orderDetails.order.discountAmount) > 0 && (
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Remise:</span>
-                    <span className="font-medium text-green-600">-{orderDetails.order.discountAmount} €</span>
+                    <span className="font-medium text-green-600">-{orderDetails.order.discountAmount} DT</span>
                   </div>
                 )}
-                <div className="flex justify-between text-lg font-bold border-t pt-2">
-                  <span>Total TTC:</span>
-                  <span className="text-primary">{orderDetails.order.totalTTC} €</span>
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Total:</span>
+                  <span className="text-primary">{orderDetails.order.totalTTC} DT</span>
                 </div>
               </div>
 

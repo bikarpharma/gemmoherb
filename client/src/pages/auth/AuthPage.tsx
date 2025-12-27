@@ -72,6 +72,13 @@ export default function AuthPage() {
                             {loginMutation.isPending ? "Connexion..." : "Se connecter"}
                         </Button>
                     </form>
+
+                    <div className="mt-4 text-center text-sm text-muted-foreground">
+                        Vous n'avez pas de compte ?{" "}
+                        <a href="/register" className="text-primary hover:underline font-medium">
+                            Créer un compte pharmacie
+                        </a>
+                    </div>
                 </CardContent>
             </Card>
         </div>

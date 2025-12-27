@@ -5,7 +5,6 @@ import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import * as db from "./db";
-import { nanoid } from "nanoid";
 
 // Procédure admin uniquement
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -42,6 +41,14 @@ export const appRouter = router({
           throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid credentials" });
         }
 
+        // Vérifier le statut du compte
+        if (user.status === "pending") {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Votre compte est en attente de validation par l'administrateur" });
+        }
+        if (user.status === "rejected") {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Votre demande d'inscription a été refusée" });
+        }
+
         // Create session token compatible with the SDK authentication system
         const { SignJWT } = await import("jose");
         const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "super-secret-jwt-key-change-this");
@@ -69,6 +76,42 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+
+    register: publicProcedure
+      .input(z.object({
+        username: z.string().min(3, "Le nom d'utilisateur doit contenir au moins 3 caractères"),
+        password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+        email: z.string().email("Email invalide"),
+        pharmacyName: z.string().min(2, "Le nom de la pharmacie est requis"),
+        pharmacyAddress: z.string().optional(),
+        pharmacyPhone: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        // Vérifier si l'utilisateur existe déjà
+        const existingUser = await db.getUserByUsername(input.username);
+        if (existingUser) {
+          throw new TRPCError({ code: "CONFLICT", message: "Ce nom d'utilisateur existe déjà" });
+        }
+
+        // Hasher le mot de passe
+        const { hashPassword } = await import("./_core/auth");
+        const hashedPassword = await hashPassword(input.password);
+
+        // Créer l'utilisateur avec statut "pending"
+        await db.createUser({
+          username: input.username,
+          password: hashedPassword,
+          email: input.email,
+          name: input.pharmacyName,
+          pharmacyName: input.pharmacyName,
+          pharmacyAddress: input.pharmacyAddress || null,
+          pharmacyPhone: input.pharmacyPhone || null,
+          role: "user",
+          status: "pending",
+        });
+
+        return { success: true, message: "Votre demande d'inscription a été envoyée. Vous recevrez une confirmation après validation par l'administrateur." };
+      }),
   }),
 
   // ===== PRODUITS =====
@@ -92,6 +135,7 @@ export const appRouter = router({
         unitVolume: z.string().optional(),
         priceHT: z.string(),
         tvaRate: z.string().default("19.00"),
+        inStock: z.boolean().default(true),
       }))
       .mutation(async ({ input }) => {
         await db.createProduct(input);
@@ -108,11 +152,21 @@ export const appRouter = router({
         unitVolume: z.string().optional(),
         priceHT: z.string().optional(),
         tvaRate: z.string().optional(),
+        inStock: z.boolean().optional(),
       }))
       .mutation(async ({ input }) => {
         const { id, ...data } = input;
         await db.updateProduct(id, data);
         return { success: true };
+      }),
+
+    toggleStock: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const product = await db.getProductById(input.id);
+        if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+        await db.updateProduct(input.id, { inStock: !product.inStock });
+        return { success: true, inStock: !product.inStock };
       }),
 
     delete: adminProcedure
@@ -169,7 +223,7 @@ export const appRouter = router({
         });
 
         const totalTTC = subtotalHT + tvaAmount;
-        const orderNumber = `CMD-${nanoid(10)}`;
+        const orderNumber = await db.getNextOrderNumber();
 
         // Créer la commande
         const orderResult = await db.createOrder({
@@ -328,6 +382,85 @@ export const appRouter = router({
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return await db.getUserById(input.id);
+      }),
+
+    // Créer un utilisateur (admin)
+    create: adminProcedure
+      .input(z.object({
+        username: z.string().min(3),
+        password: z.string().min(6),
+        email: z.string().email(),
+        pharmacyName: z.string().min(2),
+        pharmacyAddress: z.string().optional(),
+        pharmacyPhone: z.string().optional(),
+        role: z.enum(["user", "admin"]).default("user"),
+        status: z.enum(["pending", "approved", "rejected"]).default("approved"),
+      }))
+      .mutation(async ({ input }) => {
+        const existingUser = await db.getUserByUsername(input.username);
+        if (existingUser) {
+          throw new TRPCError({ code: "CONFLICT", message: "Ce nom d'utilisateur existe déjà" });
+        }
+
+        const { hashPassword } = await import("./_core/auth");
+        const hashedPassword = await hashPassword(input.password);
+
+        await db.createUser({
+          username: input.username,
+          password: hashedPassword,
+          email: input.email,
+          name: input.pharmacyName,
+          pharmacyName: input.pharmacyName,
+          pharmacyAddress: input.pharmacyAddress || null,
+          pharmacyPhone: input.pharmacyPhone || null,
+          role: input.role,
+          status: input.status,
+        });
+
+        return { success: true };
+      }),
+
+    // Approuver un utilisateur
+    approve: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.updateUser(input.id, { status: "approved" });
+        return { success: true };
+      }),
+
+    // Rejeter un utilisateur
+    reject: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.updateUser(input.id, { status: "rejected" });
+        return { success: true };
+      }),
+
+    // Mettre à jour un utilisateur
+    update: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        email: z.string().email().optional(),
+        pharmacyName: z.string().optional(),
+        pharmacyAddress: z.string().optional(),
+        pharmacyPhone: z.string().optional(),
+        status: z.enum(["pending", "approved", "rejected"]).optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        await db.updateUser(id, {
+          ...data,
+          name: data.pharmacyName,
+        });
+        return { success: true };
+      }),
+
+    // Supprimer un utilisateur
+    delete: adminProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        await db.deleteUser(input.id);
+        return { success: true };
       }),
   }),
 });

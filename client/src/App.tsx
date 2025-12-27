@@ -10,6 +10,7 @@ import Messages from "./pages/Messages";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import AuthPage from "./pages/auth/AuthPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import AdminOrders from "./pages/admin/Orders";
 import AdminUsers from "./pages/admin/Users";
 import AdminMessages from "./pages/admin/AdminMessages";
@@ -19,6 +20,7 @@ function Router() {
     <Switch>
       {/* Routes pharmacies */}
       <Route path={"/login"} component={AuthPage} />
+      <Route path={"/register"} component={RegisterPage} />
       <Route path={"/"} component={Home} />
       <Route path={"/orders"} component={Orders} />
       <Route path={"/messages"} component={Messages} />

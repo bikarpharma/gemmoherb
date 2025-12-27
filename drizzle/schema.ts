@@ -19,6 +19,7 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }).default("local"),
   role: text("role", { enum: ["user", "admin"] }).default("user").notNull(),
+  status: text("status", { enum: ["pending", "approved", "rejected"] }).default("approved").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -45,6 +46,7 @@ export const products = pgTable("products", {
   priceHT: decimal("priceHT", { precision: 10, scale: 2 }).notNull(),
   tvaRate: decimal("tvaRate", { precision: 5, scale: 2 }).default("19.00").notNull(),
   isActive: boolean("isActive").default(true).notNull(),
+  inStock: boolean("inStock").default(true).notNull(), // Disponibilité du produit (rupture de stock si false)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
