@@ -9,18 +9,25 @@ let _pool: pg.Pool | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
-    try {
-      _pool = new pg.Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false,
-        },
-      });
-      _db = drizzle(_pool);
-    } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
-      _db = null;
+  if (!_db) {
+    const dbUrl = process.env.DATABASE_URL;
+    console.log("[Database] DATABASE_URL exists:", !!dbUrl);
+    if (dbUrl) {
+      try {
+        _pool = new pg.Pool({
+          connectionString: dbUrl,
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        });
+        // Test the connection
+        await _pool.query('SELECT 1');
+        console.log("[Database] Connection successful");
+        _db = drizzle(_pool);
+      } catch (error) {
+        console.error("[Database] Failed to connect:", error);
+        _db = null;
+      }
     }
   }
   return _db;
