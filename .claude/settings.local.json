@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(claude:*)",
+      "Bash(node create-admin.mjs:*)",
+      "Bash(npx tsx:*)",
+      "Bash(node scripts/create-admin.js:*)",
+      "Bash(node scripts/create-admin.cjs:*)",
+      "Bash(node scripts/check-admin.cjs:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cat:*)",
+      "Bash(node scripts/create-pharmacy.cjs:*)",
+      "Bash(node seed-products.mjs:*)",
+      "Bash(node scripts/import-products.cjs:*)"
+    ]
+  }
+}
