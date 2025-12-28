@@ -234,46 +234,32 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[60px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
-                          <TableHead className="w-[60px]">Vol.</TableHead>
-                          <TableHead className="w-[80px] text-right">Prix</TableHead>
-                          <TableHead className="w-[80px] text-center">Statut</TableHead>
-                          <TableHead className="w-[100px] text-center">Qté</TableHead>
+                          <TableHead className="w-[70px] text-right">Prix</TableHead>
+                          <TableHead className="w-[90px] text-center">Ajouter</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {macerats?.map((product) => {
                           const quantity = getQuantity(product.id);
-                          const priceTTC = "45.432";
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="font-mono text-xs text-muted-foreground">
-                                {product.reference || "-"}
-                              </TableCell>
-                              <TableCell className="font-medium">{product.name}</TableCell>
-                              <TableCell className="text-sm text-muted-foreground">
-                                30 ml
+                              <TableCell>
+                                <div className="font-medium">{product.name}</div>
+                                <div className="text-xs text-muted-foreground">30 ml</div>
                               </TableCell>
                               <TableCell className="text-right font-medium">
-                                {priceTTC} DT
-                              </TableCell>
-                              <TableCell className="text-center">
-                                {isOutOfStock ? (
-                                  <Badge variant="destructive" className="text-xs">Épuisé</Badge>
-                                ) : (
-                                  <Badge variant="outline" className="text-green-600 border-green-600 text-xs">Stock</Badge>
-                                )}
+                                45.432 DT
                               </TableCell>
                               <TableCell>
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1 justify-center">
                                   <Input
                                     type="number"
                                     min="1"
                                     value={quantity}
                                     onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
-                                    className="w-12 h-8 text-center text-sm"
+                                    className="w-10 h-8 text-center text-sm px-1"
                                     disabled={isOutOfStock}
                                   />
                                   <Button
@@ -304,12 +290,9 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[60px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
-                          <TableHead className="w-[60px]">Vol.</TableHead>
-                          <TableHead className="w-[80px] text-right">Prix</TableHead>
-                          <TableHead className="w-[80px] text-center">Statut</TableHead>
-                          <TableHead className="w-[100px] text-center">Qté</TableHead>
+                          <TableHead className="w-[70px] text-right">Prix</TableHead>
+                          <TableHead className="w-[90px] text-center">Ajouter</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -319,31 +302,21 @@ export default function Home() {
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="font-mono text-xs text-muted-foreground">
-                                {product.reference || "-"}
-                              </TableCell>
-                              <TableCell className="font-medium">{product.name}</TableCell>
-                              <TableCell className="text-sm text-muted-foreground">
-                                {product.unitVolume}
+                              <TableCell>
+                                <div className="font-medium">{product.name}</div>
+                                <div className="text-xs text-muted-foreground">{product.unitVolume}</div>
                               </TableCell>
                               <TableCell className="text-right font-medium">
                                 {priceTTC} DT
                               </TableCell>
-                              <TableCell className="text-center">
-                                {isOutOfStock ? (
-                                  <Badge variant="destructive" className="text-xs">Épuisé</Badge>
-                                ) : (
-                                  <Badge variant="outline" className="text-green-600 border-green-600 text-xs">Stock</Badge>
-                                )}
-                              </TableCell>
                               <TableCell>
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1 justify-center">
                                   <Input
                                     type="number"
                                     min="1"
                                     value={quantity}
                                     onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
-                                    className="w-12 h-8 text-center text-sm"
+                                    className="w-10 h-8 text-center text-sm px-1"
                                     disabled={isOutOfStock}
                                   />
                                   <Button
