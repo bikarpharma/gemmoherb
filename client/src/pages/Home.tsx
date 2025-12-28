@@ -266,7 +266,7 @@ export default function Home() {
                               </TableCell>
                               <TableCell className="font-medium">{product.name}</TableCell>
                               <TableCell className="text-sm text-muted-foreground">
-                                {product.unitVolume}
+                                30 ml
                               </TableCell>
                               <TableCell className="text-right font-medium">
                                 {priceTTC} DT
