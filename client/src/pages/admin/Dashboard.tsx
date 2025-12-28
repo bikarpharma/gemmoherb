@@ -36,7 +36,7 @@ export default function AdminDashboard() {
     },
     {
       title: "Chiffre d'affaires",
-      value: `${totalRevenue.toFixed(2)} €`,
+      value: `${totalRevenue.toFixed(2)} DT`,
       description: "Total TTC",
       icon: TrendingUp,
       color: "text-orange-600",
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-bold text-primary">{order.totalTTC} €</p>
+                        <p className="text-sm font-bold text-primary">{order.totalTTC} DT</p>
                         <p className="text-xs text-muted-foreground capitalize">{order.status}</p>
                       </div>
                     </div>

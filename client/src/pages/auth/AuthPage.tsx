@@ -73,7 +73,13 @@ export default function AuthPage() {
                         </Button>
                     </form>
 
-                    <div className="mt-4 text-center text-sm text-muted-foreground">
+                    <div className="mt-4 text-center text-sm">
+                        <a href="/forgot-password" className="text-muted-foreground hover:text-primary hover:underline">
+                            Mot de passe oublié ?
+                        </a>
+                    </div>
+
+                    <div className="mt-2 text-center text-sm text-muted-foreground">
                         Vous n'avez pas de compte ?{" "}
                         <a href="/register" className="text-primary hover:underline font-medium">
                             Créer un compte pharmacie

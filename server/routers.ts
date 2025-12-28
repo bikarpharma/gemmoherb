@@ -112,6 +112,43 @@ export const appRouter = router({
 
         return { success: true, message: "Votre demande d'inscription a été envoyée. Vous recevrez une confirmation après validation par l'administrateur." };
       }),
+
+    forgotPassword: publicProcedure
+      .input(z.object({
+        email: z.string().email("Email invalide"),
+      }))
+      .mutation(async ({ input }) => {
+        // Chercher l'utilisateur par email
+        const user = await db.getUserByEmail(input.email);
+
+        // Pour des raisons de sécurité, on retourne toujours un succès
+        // même si l'email n'existe pas (pour ne pas révéler quels emails sont enregistrés)
+        if (!user) {
+          console.log("Forgot password attempt for unknown email:", input.email);
+          return { success: true };
+        }
+
+        // Générer un nouveau mot de passe temporaire
+        const { randomBytes } = await import("crypto");
+        const tempPassword = randomBytes(4).toString("hex"); // 8 caractères
+
+        // Hasher le nouveau mot de passe
+        const { hashPassword } = await import("./_core/auth");
+        const hashedPassword = await hashPassword(tempPassword);
+
+        // Mettre à jour le mot de passe de l'utilisateur
+        await db.updateUser(user.id, { password: hashedPassword });
+
+        // TODO: Envoyer l'email avec le nouveau mot de passe
+        // Pour l'instant, on log le mot de passe temporaire (à supprimer en production)
+        console.log(`[FORGOT PASSWORD] New password for ${input.email}: ${tempPassword}`);
+
+        // Note: Dans un vrai système, vous devriez utiliser un service d'email comme:
+        // - Nodemailer avec un SMTP
+        // - SendGrid, Mailgun, ou autre service d'email
+
+        return { success: true };
+      }),
   }),
 
   // ===== PRODUITS =====

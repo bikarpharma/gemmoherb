@@ -111,13 +111,20 @@ export default function Home() {
 
   const totals = calculateTotal();
 
-  // Liste des icônes disponibles (à mettre à jour au fur et à mesure)
+  // Liste complète des 48 icônes de bourgeons extraites du PDF
   const availableIcons = [
-    "airelle",
-    "amandier",
-    "argousier",
-    "aubepine",
-    "aulne",
+    "airelle", "amandier", "arbre-de-judee", "argousier",
+    "aubepine", "aulne", "bouleau", "bruyere",
+    "cassis", "cedre", "charme", "chataignier",
+    "chene", "citronnier", "cornouiller", "eglantier",
+    "erable", "figuier", "framboisier", "frene",
+    "genevrier", "ginkgo", "hetre", "lilas",
+    "mais", "marronnier", "myrtillier", "noisetier",
+    "noyer", "olivier", "orme", "peuplier",
+    "pin", "platane", "pommier", "romarin",
+    "ronce", "sapin", "saule", "seigle",
+    "sequoia", "sorbier", "tamaris", "tilleul",
+    "tilleul-argente", "vigne", "vigne-vierge", "viorne"
   ];
 
   const getIconPath = (product: { name: string; category: string }) => {
@@ -126,11 +133,20 @@ export default function Home() {
     }
 
     // Extraction du premier mot comme "slug" (ex: "Airelle BIO..." -> "airelle")
-    const slug = product.name.split(" ")[0].toLowerCase()
+    const productName = product.name.toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Supprime les accents
 
-    if (availableIcons.includes(slug)) {
-      return `/icons/${slug}.png`;
+    const firstWord = productName.split(" ")[0];
+
+    // Vérifier si c'est un bourgeon connu
+    if (availableIcons.includes(firstWord)) {
+      return `/bourgeons/${firstWord}.png`;
+    }
+
+    // Chercher une correspondance partielle (ex: "tilleul argente" -> "tilleul-argente")
+    const twoWords = productName.split(" ").slice(0, 2).join("-");
+    if (availableIcons.includes(twoWords)) {
+      return `/bourgeons/${twoWords}.png`;
     }
 
     return "/bourgeons/macerat-generic.png";
