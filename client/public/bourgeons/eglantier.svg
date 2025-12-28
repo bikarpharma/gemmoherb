@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-eglantier" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f5e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ring-eglantier" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#FF6B6B;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow-eglantier" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#FF6B6B" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg-eglantier)"/>
+
+  <!-- Decorative ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#ring-eglantier)" stroke-width="2"/>
+
+  <!-- Main shape with shadow -->
+  <g filter="url(#shadow-eglantier)">
+    
+    <ellipse cx="50" cy="55" rx="15" ry="18" fill="#FF6B6B" opacity="0.9"/>
+    <path d="M40 38 L50 30 L60 38" stroke="#228B22" stroke-width="2" fill="none"/>
+    <circle cx="50" cy="40" r="4" fill="#8B4513" opacity="0.6"/>
+    <circle cx="45" cy="50" r="2" fill="white" opacity="0.3"/>
+  
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-frene" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f5e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ring-frene" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E8B57;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#3CB371;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow-frene" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#3CB371" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg-frene)"/>
+
+  <!-- Decorative ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#ring-frene)" stroke-width="2"/>
+
+  <!-- Main shape with shadow -->
+  <g filter="url(#shadow-frene)">
+    
+    <ellipse cx="50" cy="30" rx="6" ry="10" fill="#3CB371" opacity="0.9"/>
+    <ellipse cx="38" cy="45" rx="5" ry="9" fill="#3CB371" opacity="0.85" transform="rotate(-20 38 45)"/>
+    <ellipse cx="62" cy="45" rx="5" ry="9" fill="#3CB371" opacity="0.85" transform="rotate(20 62 45)"/>
+    <ellipse cx="35" cy="62" rx="5" ry="8" fill="#3CB371" opacity="0.8" transform="rotate(-30 35 62)"/>
+    <ellipse cx="65" cy="62" rx="5" ry="8" fill="#3CB371" opacity="0.8" transform="rotate(30 65 62)"/>
+    <path d="M50 35 L50 75" stroke="#228B22" stroke-width="2"/>
+  
+  </g>
+</svg>

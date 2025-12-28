@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-peuplier" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f5e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ring-peuplier" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FA9A;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#98FB98;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow-peuplier" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#98FB98" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg-peuplier)"/>
+
+  <!-- Decorative ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#ring-peuplier)" stroke-width="2"/>
+
+  <!-- Main shape with shadow -->
+  <g filter="url(#shadow-peuplier)">
+    
+    <path d="M50 20 Q40 30 38 50 Q40 70 50 80 Q60 70 62 50 Q60 30 50 20 Z" fill="#98FB98" opacity="0.9"/>
+    <path d="M50 25 L50 75" stroke="white" stroke-width="1.5" opacity="0.4"/>
+  
+  </g>
+</svg>

@@ -129,7 +129,7 @@ export default function Home() {
 
   const getIconPath = (product: { name: string; category: string }) => {
     if (product.category === "huile_essentielle") {
-      return "/bourgeons/huile-generic.png";
+      return "/bourgeons/huile-generic.svg";
     }
 
     // Extraction du premier mot comme "slug" (ex: "Airelle BIO..." -> "airelle")
@@ -140,16 +140,16 @@ export default function Home() {
 
     // Vérifier si c'est un bourgeon connu
     if (availableIcons.includes(firstWord)) {
-      return `/bourgeons/${firstWord}.png`;
+      return `/bourgeons/${firstWord}.svg`;
     }
 
     // Chercher une correspondance partielle (ex: "tilleul argente" -> "tilleul-argente")
     const twoWords = productName.split(" ").slice(0, 2).join("-");
     if (availableIcons.includes(twoWords)) {
-      return `/bourgeons/${twoWords}.png`;
+      return `/bourgeons/${twoWords}.svg`;
     }
 
-    return "/bourgeons/macerat-generic.png";
+    return "/bourgeons/macerat-generic.svg";
   };
 
   return (
@@ -218,7 +218,7 @@ export default function Home() {
                                   alt={product.name}
                                   className="h-10 w-10 object-contain mix-blend-multiply"
                                   onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/macerat-generic.png";
+                                    e.currentTarget.src = "/bourgeons/macerat-generic.svg";
                                   }}
                                 />
                               </TableCell>
@@ -299,7 +299,7 @@ export default function Home() {
                                   alt={product.name}
                                   className="h-10 w-10 object-contain mix-blend-multiply"
                                   onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/huile-generic.png";
+                                    e.currentTarget.src = "/bourgeons/huile-generic.svg";
                                   }}
                                 />
                               </TableCell>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-chene" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f5e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ring-chene" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#654321;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#8B4513;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow-chene" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#8B4513" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg-chene)"/>
+
+  <!-- Decorative ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#ring-chene)" stroke-width="2"/>
+
+  <!-- Main shape with shadow -->
+  <g filter="url(#shadow-chene)">
+    
+    <path d="M50 20 Q35 25 30 40 Q25 50 30 55 Q25 60 30 70 Q40 80 50 80 Q60 80 70 70 Q75 60 70 55 Q75 50 70 40 Q65 25 50 20 Z" fill="#8B4513" opacity="0.9"/>
+    <path d="M50 25 L50 75" stroke="white" stroke-width="2" opacity="0.4"/>
+  
+  </g>
+</svg>

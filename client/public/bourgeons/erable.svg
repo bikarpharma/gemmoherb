@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-erable" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8f5e8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="ring-erable" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC143C;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#FF6347;stop-opacity:0.5" />
+    </linearGradient>
+    <filter id="shadow-erable" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#FF6347" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bg-erable)"/>
+
+  <!-- Decorative ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="url(#ring-erable)" stroke-width="2"/>
+
+  <!-- Main shape with shadow -->
+  <g filter="url(#shadow-erable)">
+    
+    <path d="M50 20 L55 35 L70 30 L60 45 L75 50 L60 55 L70 70 L55 60 L50 80 L45 60 L30 70 L40 55 L25 50 L40 45 L30 30 L45 35 Z" fill="#FF6347" opacity="0.9"/>
+    <path d="M50 25 L50 75" stroke="white" stroke-width="1.5" opacity="0.4"/>
+  
+  </g>
+</svg>
