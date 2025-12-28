@@ -247,7 +247,7 @@ export default function Home() {
                       <TableBody>
                         {macerats?.map((product) => {
                           const quantity = getQuantity(product.id);
-                          const priceTTC = (parseFloat(product.priceHT) * 1.19).toFixed(2);
+                          const priceTTC = "45.432";
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
@@ -290,7 +290,7 @@ export default function Home() {
                               </TableCell>
                               <TableCell>
                                 <Button
-                                  onClick={() => addToCart(product.id, product.name, product.priceHT, product.reference)}
+                                  onClick={() => addToCart(product.id, product.name, "38.18", product.reference)}
                                   size="sm"
                                   variant="default"
                                   disabled={isOutOfStock}
