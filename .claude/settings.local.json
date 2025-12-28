@@ -22,7 +22,12 @@
       "Bash(node -e \"\nconst pg = require\\(''pg''\\);\nconst pool = new pg.Pool\\({\n  connectionString: ''postgresql://neondb_owner:npg_PifQdUv6eT1I@ep-tiny-waterfall-ahztfp18-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require'',\n  ssl: { rejectUnauthorized: false }\n}\\);\npool.query\\(''SELECT id, username, role, status, email FROM users WHERE username = $1'', [''admin'']\\).then\\(r => {\n  console.log\\(r.rows[0]\\);\n  pool.end\\(\\);\n}\\);\n\")",
       "Bash(node -e \"\nconst { scrypt, randomBytes } = require\\(''crypto''\\);\nconst { promisify } = require\\(''util''\\);\nconst pg = require\\(''pg''\\);\n\nconst scryptAsync = promisify\\(scrypt\\);\n\nasync function hashPassword\\(password\\) {\n    const salt = randomBytes\\(16\\).toString\\(''hex''\\);\n    const derivedKey = await scryptAsync\\(password, salt, 64\\);\n    return salt + '':'' + derivedKey.toString\\(''hex''\\);\n}\n\nasync function main\\(\\) {\n    const pool = new pg.Pool\\({\n        connectionString: ''postgresql://neondb_owner:npg_PifQdUv6eT1I@ep-tiny-waterfall-ahztfp18-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require'',\n        ssl: { rejectUnauthorized: false }\n    }\\);\n\n    // Supprimer l''ancien admin\n    await pool.query\\(''DELETE FROM users WHERE username = $1'', [''admin'']\\);\n    console.log\\(''Ancien admin supprime''\\);\n\n    // Creer nouveau hash\n    const hashedPassword = await hashPassword\\(''admin123''\\);\n    console.log\\(''Hash genere:'', hashedPassword.substring\\(0, 50\\) + ''...''\\);\n\n    // Inserer le nouvel admin\n    await pool.query\\(\n        ''INSERT INTO users \\(username, password, name, email, role, status, \"\"loginMethod\"\", \"\"createdAt\"\", \"\"updatedAt\"\", \"\"lastSignedIn\"\"\\) VALUES \\($1, $2, $3, $4, $5, $6, $7, NOW\\(\\), NOW\\(\\), NOW\\(\\)\\)'',\n        [''admin'', hashedPassword, ''Administrateur GemmoHerb'', ''gemoherb@gmail.com'', ''admin'', ''approved'', ''local'']\n    \\);\n    console.log\\(''Nouvel admin cree!''\\);\n    console.log\\(''Username: admin''\\);\n    console.log\\(''Password: admin123''\\);\n\n    await pool.end\\(\\);\n}\n\nmain\\(\\).catch\\(console.error\\);\n\")",
       "Bash(curl:*)",
-      "Bash(python scripts/extract_icons.py:*)"
+      "Bash(python scripts/extract_icons.py:*)",
+      "Bash(dir \"C:\\\\Users\\\\DELL\\\\gemmoherb\\\\client\\\\public\\\\bourgeons\\\\*.png\" /B)",
+      "Bash(node scripts/generate-icons.js:*)",
+      "Bash(node scripts/generate-icons.cjs:*)",
+      "Bash(ls:*)",
+      "Bash(xargs:*)"
     ]
   }
 }
