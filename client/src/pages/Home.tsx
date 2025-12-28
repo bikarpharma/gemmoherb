@@ -111,42 +111,76 @@ export default function Home() {
 
   const totals = calculateTotal();
 
-  // Liste complète des 48 icônes de bourgeons extraites du PDF
-  const availableIcons = [
-    "airelle", "amandier", "arbre-de-judee", "argousier",
-    "aubepine", "aulne", "bouleau", "bruyere",
-    "cassis", "cedre", "charme", "chataignier",
-    "chene", "citronnier", "cornouiller", "eglantier",
-    "erable", "figuier", "framboisier", "frene",
-    "genevrier", "ginkgo", "hetre", "lilas",
-    "mais", "marronnier", "myrtillier", "noisetier",
-    "noyer", "olivier", "orme", "peuplier",
-    "pin", "platane", "pommier", "romarin",
-    "ronce", "sapin", "saule", "seigle",
-    "sequoia", "sorbier", "tamaris", "tilleul",
-    "tilleul-argente", "vigne", "vigne-vierge", "viorne"
-  ];
+  // Mapping des noms de produits vers les icônes SVG
+  const iconMapping: Record<string, string> = {
+    // Correspondances directes
+    "airelle": "airelle",
+    "amandier": "amandier",
+    "argousier": "argousier",
+    "aubepine": "aubepine",
+    "bruyere": "bruyere",
+    "charme": "charme",
+    "figuier": "figuier",
+    "framboisier": "framboisier",
+    "ginkgo": "ginkgo",
+    "marronnier": "marronnier",
+    "noisetier": "noisetier",
+    "noyer": "noyer",
+    "olivier": "olivier",
+    "orme": "orme",
+    "platane": "platane",
+    "pommier": "pommier",
+    "romarin": "romarin",
+    "ronce": "ronce",
+    "sorbier": "sorbier",
+    "tamaris": "tamaris",
+    "tilleul": "tilleul",
+    "vigne": "vigne",
+    "viorne": "viorne",
+    "myrtillier": "myrtillier",
+    "frene": "frene",
+
+    // Correspondances avec variations
+    "cassissier": "cassis",
+    "aulne": "aulne",
+    "bouleau": "bouleau",
+    "cedre": "cedre",
+    "chataignier": "chataignier",
+    "chene": "chene",
+    "cornouiller": "cornouiller",
+    "eglantier": "eglantier",
+    "erable": "erable",
+    "genevrier": "genevrier",
+    "hetre": "hetre",
+    "mais": "mais",
+    "peuplier": "peuplier",
+    "pin": "pin",
+    "sapin": "sapin",
+    "saule": "saule",
+    "sequoia": "sequoia",
+
+    // Noms alternatifs
+    "gui": "macerat-generic",
+    "bouillon": "macerat-generic",
+    "meleze": "macerat-generic",
+    "murier": "macerat-generic",
+    "sureau": "macerat-generic",
+  };
 
   const getIconPath = (product: { name: string; category: string }) => {
     if (product.category === "huile_essentielle") {
       return "/bourgeons/huile-generic.svg";
     }
 
-    // Extraction du premier mot comme "slug" (ex: "Airelle BIO..." -> "airelle")
+    // Normaliser le nom du produit (minuscules, sans accents)
     const productName = product.name.toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Supprime les accents
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
     const firstWord = productName.split(" ")[0];
 
-    // Vérifier si c'est un bourgeon connu
-    if (availableIcons.includes(firstWord)) {
-      return `/bourgeons/${firstWord}.svg`;
-    }
-
-    // Chercher une correspondance partielle (ex: "tilleul argente" -> "tilleul-argente")
-    const twoWords = productName.split(" ").slice(0, 2).join("-");
-    if (availableIcons.includes(twoWords)) {
-      return `/bourgeons/${twoWords}.svg`;
+    // Chercher dans le mapping
+    if (iconMapping[firstWord]) {
+      return `/bourgeons/${iconMapping[firstWord]}.svg`;
     }
 
     return "/bourgeons/macerat-generic.svg";
