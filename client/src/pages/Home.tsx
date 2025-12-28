@@ -234,7 +234,7 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[40px]"></TableHead>
+                          <TableHead className="w-[50px]"></TableHead>
                           <TableHead className="w-[70px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
                           <TableHead className="w-[100px]">Volume</TableHead>
@@ -251,11 +251,11 @@ export default function Home() {
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="w-[40px]">
+                              <TableCell className="w-[50px] p-2">
                                 <img
                                   src={getIconPath(product)}
                                   alt={product.name}
-                                  className="h-10 w-10 object-contain mix-blend-multiply"
+                                  className="h-10 w-10 object-contain rounded-full"
                                   onError={(e) => {
                                     e.currentTarget.src = "/bourgeons/macerat-generic.svg";
                                   }}
@@ -315,7 +315,7 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[40px]"></TableHead>
+                          <TableHead className="w-[50px]"></TableHead>
                           <TableHead className="w-[70px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
                           <TableHead className="w-[100px]">Volume</TableHead>
@@ -332,11 +332,11 @@ export default function Home() {
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="w-[40px]">
+                              <TableCell className="w-[50px] p-2">
                                 <img
                                   src={getIconPath(product)}
                                   alt={product.name}
-                                  className="h-10 w-10 object-contain mix-blend-multiply"
+                                  className="h-10 w-10 object-contain rounded-full"
                                   onError={(e) => {
                                     e.currentTarget.src = "/bourgeons/huile-generic.svg";
                                   }}
