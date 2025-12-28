@@ -234,14 +234,12 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[50px]"></TableHead>
-                          <TableHead className="w-[70px]">Réf.</TableHead>
+                          <TableHead className="w-[60px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
-                          <TableHead className="w-[100px]">Volume</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix</TableHead>
-                          <TableHead className="w-[100px] text-center">Statut</TableHead>
-                          <TableHead className="w-[120px]">Quantité</TableHead>
-                          <TableHead className="w-[100px]"></TableHead>
+                          <TableHead className="w-[60px]">Vol.</TableHead>
+                          <TableHead className="w-[80px] text-right">Prix</TableHead>
+                          <TableHead className="w-[80px] text-center">Statut</TableHead>
+                          <TableHead className="w-[100px] text-center">Qté</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -251,16 +249,6 @@ export default function Home() {
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="w-[50px] p-2">
-                                <img
-                                  src={getIconPath(product)}
-                                  alt={product.name}
-                                  className="h-10 w-10 object-contain rounded-full"
-                                  onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/macerat-generic.png";
-                                  }}
-                                />
-                              </TableCell>
                               <TableCell className="font-mono text-xs text-muted-foreground">
                                 {product.reference || "-"}
                               </TableCell>
@@ -273,30 +261,31 @@ export default function Home() {
                               </TableCell>
                               <TableCell className="text-center">
                                 {isOutOfStock ? (
-                                  <Badge variant="destructive">Non disponible</Badge>
+                                  <Badge variant="destructive" className="text-xs">Épuisé</Badge>
                                 ) : (
-                                  <Badge variant="outline" className="text-green-600 border-green-600">En stock</Badge>
+                                  <Badge variant="outline" className="text-green-600 border-green-600 text-xs">Stock</Badge>
                                 )}
                               </TableCell>
                               <TableCell>
-                                <Input
-                                  type="number"
-                                  min="1"
-                                  value={quantity}
-                                  onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
-                                  className="w-16 h-8 text-center"
-                                  disabled={isOutOfStock}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Button
-                                  onClick={() => addToCart(product.id, product.name, "38.18", product.reference)}
-                                  size="sm"
-                                  variant="default"
-                                  disabled={isOutOfStock}
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
+                                    className="w-12 h-8 text-center text-sm"
+                                    disabled={isOutOfStock}
+                                  />
+                                  <Button
+                                    onClick={() => addToCart(product.id, product.name, "38.18", product.reference)}
+                                    size="sm"
+                                    variant="default"
+                                    disabled={isOutOfStock}
+                                    className="h-8 w-8 p-0"
+                                  >
+                                    <Plus className="h-4 w-4" />
+                                  </Button>
+                                </div>
                               </TableCell>
                             </TableRow>
                           );
@@ -315,14 +304,12 @@ export default function Home() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[50px]"></TableHead>
-                          <TableHead className="w-[70px]">Réf.</TableHead>
+                          <TableHead className="w-[60px]">Réf.</TableHead>
                           <TableHead>Produit</TableHead>
-                          <TableHead className="w-[100px]">Volume</TableHead>
-                          <TableHead className="w-[100px] text-right">Prix</TableHead>
-                          <TableHead className="w-[100px] text-center">Statut</TableHead>
-                          <TableHead className="w-[120px]">Quantité</TableHead>
-                          <TableHead className="w-[100px]"></TableHead>
+                          <TableHead className="w-[60px]">Vol.</TableHead>
+                          <TableHead className="w-[80px] text-right">Prix</TableHead>
+                          <TableHead className="w-[80px] text-center">Statut</TableHead>
+                          <TableHead className="w-[100px] text-center">Qté</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -332,16 +319,6 @@ export default function Home() {
                           const isOutOfStock = !product.inStock;
                           return (
                             <TableRow key={product.id} className={isOutOfStock ? "opacity-60" : ""}>
-                              <TableCell className="w-[50px] p-2">
-                                <img
-                                  src={getIconPath(product)}
-                                  alt={product.name}
-                                  className="h-10 w-10 object-contain rounded-full"
-                                  onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/huile-generic.png";
-                                  }}
-                                />
-                              </TableCell>
                               <TableCell className="font-mono text-xs text-muted-foreground">
                                 {product.reference || "-"}
                               </TableCell>
@@ -354,30 +331,31 @@ export default function Home() {
                               </TableCell>
                               <TableCell className="text-center">
                                 {isOutOfStock ? (
-                                  <Badge variant="destructive">Non disponible</Badge>
+                                  <Badge variant="destructive" className="text-xs">Épuisé</Badge>
                                 ) : (
-                                  <Badge variant="outline" className="text-green-600 border-green-600">En stock</Badge>
+                                  <Badge variant="outline" className="text-green-600 border-green-600 text-xs">Stock</Badge>
                                 )}
                               </TableCell>
                               <TableCell>
-                                <Input
-                                  type="number"
-                                  min="1"
-                                  value={quantity}
-                                  onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
-                                  className="w-16 h-8 text-center"
-                                  disabled={isOutOfStock}
-                                />
-                              </TableCell>
-                              <TableCell>
-                                <Button
-                                  onClick={() => addToCart(product.id, product.name, product.priceHT, product.reference)}
-                                  size="sm"
-                                  variant="default"
-                                  disabled={isOutOfStock}
-                                >
-                                  <Plus className="h-4 w-4" />
-                                </Button>
+                                <div className="flex items-center gap-1">
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(product.id, parseInt(e.target.value) || 1)}
+                                    className="w-12 h-8 text-center text-sm"
+                                    disabled={isOutOfStock}
+                                  />
+                                  <Button
+                                    onClick={() => addToCart(product.id, product.name, product.priceHT, product.reference)}
+                                    size="sm"
+                                    variant="default"
+                                    disabled={isOutOfStock}
+                                    className="h-8 w-8 p-0"
+                                  >
+                                    <Plus className="h-4 w-4" />
+                                  </Button>
+                                </div>
                               </TableCell>
                             </TableRow>
                           );
