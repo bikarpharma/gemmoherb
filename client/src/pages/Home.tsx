@@ -174,7 +174,7 @@ export default function Home() {
 
   const getIconPath = (product: { name: string; category: string }) => {
     if (product.category === "huile_essentielle") {
-      return "/bourgeons/huile-generic.svg";
+      return "/bourgeons/huile-generic.png";
     }
 
     // Normaliser le nom du produit (minuscules, sans accents)
@@ -183,12 +183,12 @@ export default function Home() {
 
     const firstWord = productName.split(" ")[0];
 
-    // Chercher dans le mapping
+    // Chercher dans le mapping - utiliser PNG
     if (iconMapping[firstWord]) {
-      return `/bourgeons/${iconMapping[firstWord]}.svg`;
+      return `/bourgeons/${iconMapping[firstWord]}.png`;
     }
 
-    return "/bourgeons/macerat-generic.svg";
+    return "/bourgeons/macerat-generic.png";
   };
 
   return (
@@ -257,7 +257,7 @@ export default function Home() {
                                   alt={product.name}
                                   className="h-10 w-10 object-contain rounded-full"
                                   onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/macerat-generic.svg";
+                                    e.currentTarget.src = "/bourgeons/macerat-generic.png";
                                   }}
                                 />
                               </TableCell>
@@ -338,7 +338,7 @@ export default function Home() {
                                   alt={product.name}
                                   className="h-10 w-10 object-contain rounded-full"
                                   onError={(e) => {
-                                    e.currentTarget.src = "/bourgeons/huile-generic.svg";
+                                    e.currentTarget.src = "/bourgeons/huile-generic.png";
                                   }}
                                 />
                               </TableCell>
